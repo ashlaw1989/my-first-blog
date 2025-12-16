@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% block content %}
+{% if user.is_authenticated %}
     {% for post in posts %}
         <article class="post">
             <time class="date">{{ post.publish_date }}</time>
@@ -7,4 +8,5 @@
             <p>{{ post.text|linebreaksbr }}</p>
         </article>
     {% endfor %}
+{% endif %}
 {% endblock %}

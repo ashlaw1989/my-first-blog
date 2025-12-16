@@ -30,7 +30,16 @@
             <a href="{% url 'post_draft_list' %}" class="top-menu">
                 {% include './icons/pen.svg' %}
             </a>
+            <a button href="/logout" class="top-menu" style="background: none; border: none;">
+                <i>{% include './icons/door-closed.svg' %}</i>
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="top-menu">
+                {% include './icons/door-open.svg' %}
+            </a>
             {% endif %}
+
+
             <h1><a href="/">Django Girls Blog</a></h1>
         </div>
     </header>

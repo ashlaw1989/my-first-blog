@@ -4,6 +4,12 @@ from django.shortcuts import redirect
 from .models import Post
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .models import Comment
+from .forms import CommentForm
 
 # Create your views here.
 
@@ -68,3 +74,28 @@ def post_remove(request, pk):
     if request.method == "POST":
         post.delete()
     return redirect("post_list")
+
+def logout_view(request):
+    logout(request)
+    return redirect("post_list")
+
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "registration/signup.html"
+
+@login_required
+def add_comment_to_post(request):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect("post_detail", pk=post.pk)
+
+    else:
+        form = CommentForm()
+        return render(request, "blog/add_comment_to_post.html", {"form" : form})

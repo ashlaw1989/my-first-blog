@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import SignUpView
 
 
 urlpatterns = [
@@ -11,5 +12,8 @@ urlpatterns = [
     path("drafts/", views.post_draft_list, name="post_draft_list"),
     path("post/<int:pk>/publish/", views.post_publish, name="post_publish"),
     path("post/<int:pk>/remove", views.post_remove, name="post_remove"),
+    path("logout/", views.logout_view, name="logout"),
+    path("signup/", SignUpView.as_view(), name="signup"),
+    path("post<int:pk>/comment/", views.add_comment_to_post, name="add_comment_to_post"),
 ]
 
